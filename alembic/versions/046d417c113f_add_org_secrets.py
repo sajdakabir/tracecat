@@ -1,3 +1,4 @@
+```python
 """Add org secrets
 
 Revision ID: 046d417c113f
@@ -45,6 +46,8 @@ def upgrade() -> None:
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("description", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("encrypted_keys", sa.LargeBinary(), nullable=False),
+        sa.Column("encryption_key_id", sqlmodel.sql.sqltypes.AutoString(), nullable=False), # Reference to encryption key
+        sa.Column("encryption_algorithm", sqlmodel.sql.sqltypes.AutoString(), nullable=False, server_default='AES-256-GCM'), # Encryption algorithm used
         sa.Column("environment", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("tags", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
         sa.PrimaryKeyConstraint("surrogate_id"),
@@ -65,3 +68,4 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_organizationsecret_id"), table_name="organizationsecret")
     op.drop_table("organizationsecret")
     # ### end Alembic commands ###
+```
